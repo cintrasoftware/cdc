@@ -3,7 +3,7 @@ from cdc.user.model import User
 from sqlalchemy.orm import DeclarativeBase, Mapped, Session, mapped_column, sessionmaker
 
 
-engine = create_engine("sqlite://", echo=True)
+engine = create_engine("sqlite:///file.db", echo=True)
 
 
 class Base(DeclarativeBase):
@@ -14,15 +14,17 @@ class UserModel(Base):
     __tablename__ = "users"
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
-    fistname: Mapped[str] = mapped_column(String)
+    firstname: Mapped[str] = mapped_column(String)
     lastname: Mapped[str] = mapped_column(String)
 
 
 class UserRepository:
     def create(self, user: User.Create) -> User:
         with Session(engine) as db:
-            db_user = UserModel(fistname=user.fistname, lastname=user.lastname)
+            db_user = UserModel(firstname=user.firstname, lastname=user.lastname)
             db.add(db_user)
             db.commit()
             db.refresh(db_user)
-        return User(id=db_user.id, fistname=db_user.fistname, lastname=db_user.lastname)
+        return User(
+            id=db_user.id, firstname=db_user.firstname, lastname=db_user.lastname
+        )

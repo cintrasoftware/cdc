@@ -1,12 +1,20 @@
+from contextlib import asynccontextmanager
 from cdc.user.model import User
 from cdc.user.service import UserService
-from fastapi import APIRouter, Depends
+from cdc.user.repository import Base, engine
+from fastapi import Depends
+from fastapi import FastAPI
+
+app = FastAPI()
 
 
-router = APIRouter()
+@app.on_event("startup")
+async def startup_event():
+    Base.metadata.create_all(bind=engine)
+    print("Database initialized")
 
 
-@router.post("/users")
+@app.post("/users")
 def create_user(
     user: User.Create, user_service: UserService = Depends(UserService.create_service)
 ) -> User:

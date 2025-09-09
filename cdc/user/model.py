@@ -3,9 +3,9 @@ from pydantic import BaseModel
 
 class User(BaseModel):
     id: int
-    fistname: str
+    firstname: str
     lastname: str
 
     class Create(BaseModel):
-        fistname: str
+        firstname: str
         lastname: str
