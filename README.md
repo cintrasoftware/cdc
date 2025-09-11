@@ -19,12 +19,18 @@ curl -X POST http://127.0.0.1:8000/users \                                      
   }'
 ```
 
+Create a slot:
+
+```
+SELECT pg_create_logical_replication_slot('my_first_slot', 'wal2json');
+```
+
 Read from the slot:
 
 ```
 pg_recvlogical \                                                                                                   INT ✘  2m 5s   06:08:59 PM 
   -h 127.0.0.1 -p 5432 -U postgres -d postgres \
-  --slot=my_first_slut --start \
+  --slot=my_first_slot --start \
   --plugin=wal2json \
   -o pretty-print=0 \
   -o add-tables=public.users \
