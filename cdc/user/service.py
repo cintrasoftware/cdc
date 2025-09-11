@@ -15,6 +15,9 @@ class UserService:
         log.info(f"User created: {new_user}")
         return new_user
 
+    def list_users(self) -> list[User]:
+        return self.user_repository.list()
+
     @classmethod
     def create_service(cls) -> "UserService":
         return cls(UserRepository())
